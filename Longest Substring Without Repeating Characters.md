@@ -33,7 +33,9 @@ Notice that the answer must be a substring, "pwke" is a subsequence and not a su
 -   `s`  consists of English letters, digits, symbols and spaces.
 
 **Solution:**
+
 ***Brute force***
+
 There is no shy to mention brute force solution - checking uniqueness of every substring. 
 ```
 func lengthOfLongestSubstring(s string) int {
@@ -62,11 +64,14 @@ func isUnique(i,j int, s string) bool {
 	return true
 }
 ```
+
 Time Complexity: O(n^3) 
 Space Complexity: O(k) where k is the size of Set. k is min of the length of input string N and the size of alphabet characters M -> O(min(N,M))
 
 ***Sliding window***
+
 It is unnecessary to check part of the substring that has already been checked. All we need to know is that for all substrings starting from index i, which longest substring does not have duplicated character. We can use a Set to add unique character starting from index i and stop when a duplication is found or when we reach end of the string. Then we start over from index i+1 and instead of using a new Set, we just need to remove character at index i from the Set because the rest are characters of a unique substring.
+
 To optimize the above solution, instead of starting over from index i+1, we can start the search over from index from index k+1, with k is the index where we find previous occurrence of the duplicated character
 
 ```
