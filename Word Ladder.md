@@ -93,3 +93,85 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
 **Time Complexity:** O(M^2 x N) where M is length of each word and N is size of wordList. It takes O(M x N) iterations to forms adjacent dictionary and O(M) time to  for each intermediate key. Same in BFS algo,
 
 **Space Complexity:** O(M^2 x N) where M is length of each word and N is size of wordList. Each word has M keys, so we need a space of size MxM for all of these keys. As we have N words, the total space is O(M^2 x N). `visited` dictionary needs O(M x N) space as there are at most N words, each word needs M space. Queue for BFS would need a space for all N words in the worst cas, which results in a space complexity of O(M x N)
+
+**Solution with bidirectional BFS**
+
+```
+type tuple struct {
+    Word string
+    Level int
+}
+
+type Solution struct {
+    adjacentWords map[string][]string
+    m,n int
+}
+
+func ladderLength(beginWord string, endWord string, wordList []string) int {
+    var isEndWordExist bool
+    for _,w := range wordList {
+        if w == endWord {
+            isEndWordExist = true
+        }
+    }
+    if !isEndWordExist {
+        return 0
+    }
+     L,N := len(beginWord), len(wordList)
+    // pre-processing each word in wordList to find their 1-character-distanced tranformation
+    adjacentWords := make(map[string][]string) 
+    for i := 0; i < N; i++ {
+        word := wordList[i]
+        for j := 0; j < L; j++ {
+            key := word[:j] + "*" + word[j+1:]
+            adjacentWords[key] = append(adjacentWords[key], word)
+        }
+    }
+    
+    s := Solution{
+        m: L,
+        n: N,
+        adjacentWords: adjacentWords,
+    }
+    
+    beginQueue := []tuple{{beginWord,1}}
+    endQueue := []tuple{{endWord,1}}
+    
+    beginVisited := map[string]int{beginWord: 1}
+    endVisited := map[string]int{endWord: 1}
+    
+    for len(beginQueue) > 0 && len(endQueue) > 0 {
+        if ans := s.visitWord(&beginQueue, beginVisited,endVisited); ans > -1 {
+            return ans
+        }
+        
+        if ans := s.visitWord(&endQueue, endVisited, beginVisited); ans > -1 {
+            return ans
+        }
+    }
+    
+    return 0
+}
+
+func (s *Solution) visitWord(q *[]tuple, visited,otherVisited map[string]int) int {
+    t := (*q)[0]
+    *q = (*q)[1:]
+    
+    for i := 0; i < s.m; i++ {
+        key := t.Word[:i] + "*" + t.Word[i+1:]
+        
+        for _,w := range s.adjacentWords[key] {
+            if val,found := otherVisited[w]; found {
+                return t.Level + val
+            }
+            
+            if _, found := visited[w]; !found {
+                visited[w] = t.Level + 1
+                *q = append(*q, tuple{w,t.Level + 1})
+            }
+        }
+    }
+    
+    return -1 
+}
+```
