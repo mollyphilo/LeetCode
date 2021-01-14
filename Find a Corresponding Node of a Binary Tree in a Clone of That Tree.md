@@ -128,4 +128,4 @@ class Solution:
 				queueC.append(nodeC.right)
 ```
 -   Time complexity:  O(N) since one has to visit each node.
--   Space complexity: up to O(N)  to keep the queue. Let's use the last level to estimate the queue size. This level could contain up to  N/2N/2  tree nodes in the case of  [complete binary tree](https://leetcode.com/problems/count-complete-tree-nodes/).
+-   Space complexity: up to O(N)  to keep the queue. Let's use the last level to estimate the queue size. This level could contain up to  N/2 tree nodes in the case of  [complete binary tree](https://leetcode.com/problems/count-complete-tree-nodes/).
