@@ -35,6 +35,7 @@ So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3].
 -   `0 <= ai, bi  < numCourses`
 -   `ai != bi`
 -   All the pairs  `[ai, bi]`  are  **distinct**
+
 **Solutions:**
 This problem asks for a topological sort order. Recall that topolocal sorting for Directed Acylic Graph (DAG) is a linear ordering of vertices such that for every directed edge [u v], vertex u comes before v in the ordering. Topological sorting is not possible with cyclic graph. 
 First solution is DFS with visits list to keep track of what node has been visited during the current iteration from the start node. 
