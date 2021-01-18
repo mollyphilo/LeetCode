@@ -51,8 +51,10 @@ Return  _a reference to the same node_  in the  `cloned`  tree.
  -   The values of the nodes of the  `tree`  are unique.
  -   `target`  node is a node from the  `original`  tree and is not  `null`.
 **Solutions:**
+
 This is a Python 2 practice
 The solutions are just tree traversal
+
 ```python
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -61,7 +63,9 @@ The solutions are just tree traversal
 #         self.left = None
 #         self.right = None
 ```
+
 **DFS Recursive inorder traveral**
+
 ```python
 class Solution(object):
     def getTargetCopy(self, original, cloned, target):
@@ -86,7 +90,9 @@ class Solution(object):
    height
 
 **DFS Iterative inorder traversal**
+
 Use stack to keep track of nodes one needs to visit
+
 ```python
 class Solution:
 	def getTargetCopy(self, original, cloned, target):
@@ -110,7 +116,9 @@ class Solution:
 
 -   Time complexity:  O(N) since one has to visit each node.
 -   Space complexity: up to  O(H)  to keep the stack, where  HH  is a tree height.
+
 **BFS Iterative traversal**
+
 ```python
 class Solution:
 	def getTargetCopy(self, original, cloned, target):

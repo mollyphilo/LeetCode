@@ -23,7 +23,8 @@ Given the  `head`  of a sorted linked list,  _delete all nodes that have duplica
 -   The list is guaranteed to be  **sorted**  in ascending order.
 
 **Solution:**
-```
+
+```go
 /**
  * Definition for singly-linked list.
  * type ListNode struct {

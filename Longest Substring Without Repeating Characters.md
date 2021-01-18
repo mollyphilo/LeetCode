@@ -37,7 +37,7 @@ Notice that the answer must be a substring, "pwke" is a subsequence and not a su
 ***Brute force***
 
 There is no shy to mention brute force solution - checking uniqueness of every substring. 
-```
+```go
 func lengthOfLongestSubstring(s string) int {
 	ans:= 0
 	n := len(s)
@@ -74,22 +74,22 @@ It is unnecessary to check part of the substring that has already been checked. 
 
 To optimize the above solution, instead of starting over from index i+1, we can start the search over from index from index k+1, with k is the index where we find previous occurrence of the duplicated character
 
-```
+```go
 func lengthOfLongestSubstring(s string) int {
-    // current index of character
-    set := make(map[uint8]int)
-    ans,i := 0,0
-    for j := 0; j < len(s); j++ {
-        if k,found := set[s[j]]; found {
-            if k > i {
-                i = k
-            }
-        }
-        if temp := j-i+1; temp > ans {
-            ans = temp
-        }
-        set[s[j]] = j+1 // next i = j+1 where j is previous occurence of the character
-    }
-    return ans
+  // current index of character
+  set := make(map[uint8]int)
+  ans,i := 0,0
+  for j := 0; j < len(s); j++ {
+      if k,found := set[s[j]]; found {
+          if k > i {
+              i = k
+          }
+      }
+      if temp := j-i+1; temp > ans {
+          ans = temp
+      }
+      set[s[j]] = j+1 // next i = j+1 where j is previous occurence of the character
+  }
+  return ans
 }
 ```

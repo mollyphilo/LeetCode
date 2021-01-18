@@ -27,7 +27,9 @@ Return  _the  **minimum number**  of operations to reduce_ `x`  _to  **exactly**
 -   `1 <= x <= 109`
 
 **Solution:**
+
 Instead of finding the mininum left or right substractions, we find the maxinum subarray that sums up to sum(nums) - x, which can be done greedily
+
 ```python
 class Solution(object):
     def minOperations(self, nums, x):

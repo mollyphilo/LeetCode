@@ -30,8 +30,9 @@ Constraints:
 * It is guaranteed that the list represents a number that does not have leading zeros.
 
 **Solution**
+
 ```
-/**
+/**go
  * Definition for singly-linked list.
  * type ListNode struct {
  *     Val int

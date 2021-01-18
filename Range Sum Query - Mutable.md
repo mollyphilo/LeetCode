@@ -58,6 +58,7 @@ Implement the  `NumArray`  class:
     numArray.sumRange(0, 2); // return 8 = sum([1,2,5])
 
 **Solution**
+
 ```go
 type NumArray struct {
     nums []int

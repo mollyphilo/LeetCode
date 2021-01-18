@@ -25,7 +25,8 @@ Merge two sorted linked lists and return it as a  **sorted**  list. The list sho
 -   Both  `l1`  and  `l2`  are sorted in  **non-decreasing**  order.
 
 **Solution:**
-```
+
+```go
 /**
  * Definition for singly-linked list.
  * type ListNode struct {

@@ -44,7 +44,7 @@ This problem asks to search for a shortest path from undirected and unweighted s
 1. If a word is `endWord`, increased level by 1 and return. Else, push unvisited words to queue with level increased by 1
 
 
-```
+```go
 type tuple struct {
     Word string
     Level int
@@ -96,7 +96,7 @@ func ladderLength(beginWord string, endWord string, wordList []string) int {
 
 **Solution with bidirectional BFS**
 
-```
+```go
 type tuple struct {
     Word string
     Level int
