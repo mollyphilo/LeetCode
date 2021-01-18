@@ -39,29 +39,29 @@ Notice that the answer must be a substring, "pwke" is a subsequence and not a su
 There is no shy to mention brute force solution - checking uniqueness of every substring. 
 ```go
 func lengthOfLongestSubstring(s string) int {
-	ans:= 0
-	n := len(s)
-    for i := 0; i < n; i++ {
-		for j := i+1; j < n; j++ {
-			if isUnique(i,j,s) {
-				if temp := j-i+1; temp > ans {
-					ans = temp
-				}
-			}
-		}
+  ans:= 0
+  n := len(s)
+  for i := 0; i < n; i++ {
+    for j := i+1; j < n; j++ {
+      if isUnique(i,j,s) {
+        if temp := j-i+1; temp > ans {
+	  ans = temp
 	}
-	return ans
+      }
+    }
+  }
+  return ans
 }
 
 func isUnique(i,j int, s string) bool {
-	set := make(map[uint8]struct{})
-	for k := i; k <= j; k++ {
-		if _,found := set[s[k]]; found {
-			return false
-		}
-		set[s[k]] = struct{}{}
-	}
-	return true
+  set := make(map[uint8]struct{})
+  for k := i; k <= j; k++ {
+    if _,found := set[s[k]]; found {
+      return false
+    }
+    set[s[k]] = struct{}{}
+  }
+  return true
 }
 ```
 
