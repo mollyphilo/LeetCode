@@ -19,6 +19,7 @@ Given an  `m x n`  matrix  `mat`  of integers, sort each  **matrix diagonal**  i
 -   `1 <= mat[i][j] <= 100`
 
 **Solutions:**
+
 Use array to store value for each diagonal. 
 As the hint suggests, all cells in the same diagonal (i,j) have the same difference so we can get the diagonal of a cell using the difference i-j. 
 Therefore, a map can be used to store diagonal array with the difference `i-j` be the key.
@@ -44,7 +45,8 @@ func diagonalSort(mat [][]int) [][]int {
     for key := range table {
         sort.Ints(table[key])       
     }
-	// put sorted value back to the matrix
+
+    // put sorted value back to the matrix
     for i := 0; i < n; i++ {
         for j := 0; j < m; j++ {
             mat[i][j] = table[i-j][0]
