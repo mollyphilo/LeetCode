@@ -16,9 +16,11 @@ Design an algorithm to find the maximum profit. You may complete as many transac
 **Solution:**
 
 Let buy[i] be the max profit till date i. The series of transaction ends with a buy at i
+
 Let sell[i] be the max profit till date i with the series of transactions ending with a sell at i
 
 Buy at i either means taking a rest since the buy at i-1, or sell before/at i-2 then buy at i
+
 Sell at i either means taking a rest since the sell at i-1, or buy at/before i-1 and sell at i
 
 In code they mean:
@@ -40,6 +42,8 @@ Their initial values are as followed:
 b1 = b0 = -prices[0] // at 0 a stock can only be bought
 s2 = s1 = s0 = 0 // does not have anything to sell at 0
 ```
+
+Here is the code:
 
 ```go
 func maxProfit(prices []int) int {
