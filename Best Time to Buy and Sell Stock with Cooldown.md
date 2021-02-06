@@ -14,6 +14,7 @@ Design an algorithm to find the maximum profit. You may complete as many transac
 	Explanation: transactions = [buy, sell, cooldown, buy, sell]
 
 **Solution:**
+
 Let buy[i] be the max profit till date i. The series of transaction ends with a buy at i
 Let sell[i] be the max profit till date i with the series of transactions ending with a sell at i
 
