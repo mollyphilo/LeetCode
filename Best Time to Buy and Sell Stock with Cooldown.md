@@ -22,16 +22,24 @@ Buy at i either means taking a rest since the buy at i-1, or sell before/at i-2 
 Sell at i either means taking a rest since the sell at i-1, or buy at/before i-1 and sell at i
 
 In code they mean:
+
+```
 buy[i] = max(buy[i-1], sell[i-2]-prices[i])
 sell[i] = max(sell[i-1], buy[i-1]+prices[i])
+```
 
 Since all indices one iteration care about is i-2,i-1 and i, let represent them with variables instead of array of buy and sell:
+```
 b1,b0 = buy[i-1],buy[i] // buy[i-2] ain't used in the algorithm so it is not needed
 s2,s1,s0 = sell[i-2],sell[i-1],sell[i]
+```
 
 Their initial values are as followed:
+
+```
 b1 = b0 = -prices[0] // at 0 a stock can only be bought
 s2 = s1 = s0 = 0 // does not have anything to sell at 0
+```
 
 ```go
 func maxProfit(prices []int) int {
