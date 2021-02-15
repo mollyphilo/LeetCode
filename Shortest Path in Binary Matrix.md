@@ -32,39 +32,53 @@ Return the length of the shortest such clear path from top-left to bottom-right.
 
 **Solution:**
 
+This problem asks if there are 2 disjoint sets A,B such that 
+each vertex in set A connects with all vertexes in set B and vice versa,
+but vertex in set A does not connect to one another and
+vertex in set B does not connect to one another
+
+If we label all vertexes in set A with a value, e.g. "1", 
+and all vertexes in set B with a different value, e.g. "-1",
+then we can start the search at any vertex. 
+
+We label that vertex "1", 
+and all of its connected vertexes (neighbors) "-1", the neighbors of connected vertexes "1" and so on.
+If at any step, a vertex has visited neighbors with the same label as itself, the graph is not bipartite
+
 ```go
-func shortestPathBinaryMatrix(grid [][]int) int {
-    n := len(grid)
-    if n == 0 { return 0 }
+func isBipartite(graph [][]int) bool {
+    n := len(graph)
+    if n == 0 { return false }
     
-    if grid[0][0] == 1 || grid[n-1][n-1] == 1 { return -1 }
+    // queue for vertexes, whose value is 0..n-1
+    var queue []int
+    // 3 possible values for label: 0 = unlabeled, 1 = setA, -1 = setB
+    labels := make([]int,n)
     
-    queue := [][]int{[]int{0,0}}
-    steps := 0
-    
-    for len(queue) > 0 {
-        size := len(queue)
-        steps += 1
-        for s := 0; s < size; s++ {
-            cell := queue[0]
-            r,c := cell[0],cell[1]
-            queue[0] = nil 
+    for i := 0; i < n; i++ {
+        // no need to check the vertex that has been labeled and checked
+        if labels[i] != 0 { continue }
+        // new queue for all connected vertexes
+        queue = []int{i}
+        labels[i] = 1
+        
+        for len(queue) > 0 {
+            u := queue[0]
             queue = queue[1:]
-
-            if r == n-1 && c == n-1 { return steps }
-
-            for _,i := range []int{r-1,r,r+1} {
-                for _,j := range []int{c-1,c,c+1} {
-                    if i >= 0 && i < n && j >= 0 && j < n && !(i == r && j == c) && grid[i][j] == 0 {
-                        queue = append(queue, []int{i,j})
-                        grid[i][j] = -1
-                    }
+            
+            for _,v := range graph[u] {
+                // unvisited
+                if labels[v] == 0 {
+                    labels[v] = -labels[u]
+                    queue = append(queue,v)
+                }else if labels[v] == labels[u] {
+                    return false
                 }
             }
         }
     }
     
-    return -1
+    return true
 }
 ```
 
