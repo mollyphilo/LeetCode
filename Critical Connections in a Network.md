@@ -83,3 +83,56 @@ func min(a,b int) int {
     return b
 }
 ```
+
+Simpler implemtation:
+
+```go
+// In other word, find the edges that connect Strongly Connected Component (SCC)
+// We will use Tarjan's algorithm to discover SCC
+// If our current node reaches a node belonged to different SCC, a.k.a dfs_num[node] < dfs_low[current] or node 
+// was visited before the SCC containing current node, then this edge is a bridge between SCC
+func criticalConnections(n int, connections [][]int) [][]int {
+    // generate adjacent lists from connections
+    adjList := make([][]int, n)
+    for _,con := range connections {
+        adjList[con[0]] = append(adjList[con[0]], con[1])
+        adjList[con[1]] = append(adjList[con[1]], con[0])
+    }
+    // dfs_nums stores the node's visited order for tarjan's algorithm. We use pointer of integer here
+    // to easily check if an item has been set, which determines whether or not has it visited
+    dfs_num := make([]*int, n)
+    var bridges [][]int // our answer
+    
+    // call dfs for a node
+    dfs(0,-1,0, adjList, dfs_num, &bridges)
+    // return bridges
+    return bridges
+}
+
+func dfs(cur, prev, depth int, adjList [][]int, dfs_num []*int,bridges *[][]int) {
+    dfs_num[cur] = &depth
+    
+    for _,n := range adjList[cur] {
+        // don't visit the node where we came from
+        if n == prev {
+            continue
+        }
+        
+        if dfs_num[n] == nil {
+            dfs(n,cur,depth+1,adjList,dfs_num,bridges)
+        }
+        
+        // n is the starting node of this SCC
+        if *dfs_num[cur] > *dfs_num[n] {
+            dfs_num[cur] = dfs_num[n]
+        }
+        if *dfs_num[n] > depth {
+            *bridges = append(*bridges,[]int{cur,n})
+        }
+    }
+}
+```
+
+Time Complexity: O(V + E)
+
+Space Complexity O(V)
