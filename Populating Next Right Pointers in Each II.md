@@ -19,7 +19,7 @@ Initially, all next pointers are set to  `NULL`.
 
 **Example 1:**
 
-    ![](https://assets.leetcode.com/uploads/2019/02/15/117_sample.png)
+![](https://assets.leetcode.com/uploads/2019/02/15/117_sample.png)
 
     Input: root = [1,2,3,4,5,null,7]
     Output: [1,#,2,3,#,4,5,7,#]

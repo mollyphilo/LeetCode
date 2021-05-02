@@ -10,21 +10,21 @@ Given the output  `S`  of this traversal, recover the tree and return  _its_  `r
 
 **Example 1:**
 
-    ![](https://assets.leetcode.com/uploads/2019/04/08/recover-a-tree-from-preorder-traversal.png)
+![](https://assets.leetcode.com/uploads/2019/04/08/recover-a-tree-from-preorder-traversal.png)
 
     Input: S = "1-2--3--4-5--6--7"
     Output: [1,2,5,3,4,6,7]
 
 **Example 2:**
 
-    ![](https://assets.leetcode.com/uploads/2019/04/11/screen-shot-2019-04-10-at-114101-pm.png)
+![](https://assets.leetcode.com/uploads/2019/04/11/screen-shot-2019-04-10-at-114101-pm.png)
 
     Input: S = "1-2--3---4-5--6---7"
     Output: [1,2,5,3,null,6,null,4,null,7]
 
 **Example 3:**
 
-    ![](https://assets.leetcode.com/uploads/2019/04/11/screen-shot-2019-04-10-at-114955-pm.png)
+![](https://assets.leetcode.com/uploads/2019/04/11/screen-shot-2019-04-10-at-114955-pm.png)
 
     Input: S = "1-401--349---90--88"
     Output: [1,401,null,349,88,90]

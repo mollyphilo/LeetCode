@@ -6,13 +6,13 @@ Given an integer  `n`, return  _the number of structurally unique  **BST'**s (bi
 
 ![](https://assets.leetcode.com/uploads/2021/01/18/uniquebstn3.jpg)
 
-**Input:** n = 3
-**Output:** 5
+    Input: n = 3
+    Output: 5
 
 **Example 2:**
 
-**Input:** n = 1
-**Output:** 1
+    Input: n = 1
+    Output: 1
 
 **Constraints:**
 

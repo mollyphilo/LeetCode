@@ -13,16 +13,19 @@ Return the length of the shortest such clear path from top-left to bottom-right.
 
 **Example 1:**
 
-**Input:** [[0,1],[1,0]]
+    Input: [[0,1],[1,0]]
 ![](https://assets.leetcode.com/uploads/2019/08/04/example1_1.png) 
-**Output:** 2
+
+    Output: 2
+
 ![](https://assets.leetcode.com/uploads/2019/08/04/example1_2.png)
 
 **Example 2:**
 
-**Input:** [[0,0,0],[1,1,0],[1,1,0]]
+    Input: [[0,0,0],[1,1,0],[1,1,0]]
 ![](https://assets.leetcode.com/uploads/2019/08/04/example2_1.png) 
-**Output:** 4
+
+    Output: 4
 ![](https://assets.leetcode.com/uploads/2019/08/04/example2_2.png)
 
 **Note:**

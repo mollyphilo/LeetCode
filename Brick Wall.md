@@ -19,7 +19,7 @@ If your line go through the edge of a brick, then the brick is not considered as
     Output: 2
 
     Explanation: 
-    ![](https://assets.leetcode.com/uploads/2018/10/12/brick_wall.png)
+![](https://assets.leetcode.com/uploads/2018/10/12/brick_wall.png)
 
 **Note:**
 
