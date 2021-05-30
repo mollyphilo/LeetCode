@@ -76,20 +76,20 @@ To optimize the above solution, instead of starting over from index i+1, we can 
 
 ```go
 func lengthOfLongestSubstring(s string) int {
-  // current index of character
-  set := make(map[uint8]int)
-  ans,i := 0,0
-  for j := 0; j < len(s); j++ {
-      if k,found := set[s[j]]; found {
-          if k > i {
-              i = k
-          }
-      }
-      if temp := j-i+1; temp > ans {
-          ans = temp
-      }
-      set[s[j]] = j+1 // next i = j+1 where j is previous occurence of the character
-  }
-  return ans
+    set := make(map[byte]int)
+    
+    var ans,j int
+    
+    for i := 0; i < len(s); i++ {
+        if k,found := set[s[i]]; found && k + 1 > j {
+            j = k+1
+        }
+        if temp := i - j + 1; temp > ans {
+            ans = temp
+        }
+        set[s[i]] = i
+    }
+    
+    return ans
 }
 ```
