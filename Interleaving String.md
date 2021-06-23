@@ -60,37 +60,36 @@ func isInterleaveRecursive(s1 string,i int,s2 string,j int,res string, s3 string
 ```
 
 recursive + memorization
+
 ```go
 func isInterleave(s1 string, s2 string, s3 string) bool {
-    if len(s1) + len(s2) != len(s3) {
-        return false
+    n1,n2 := len(s1), len(s2)
+    if n1 + n2 != len(s3) { return false }
+    memo := make([][]int, n1)
+    for i := 0; i < n1; i++ {
+        memo[i] = make([]int, n2)
     }
-    memo := make([][]int,len(s1))
-    for i := 0; i < len(s1); i++ {
-        memo[i] = make([]int, len(s2))
-    }
-    return isInterleaveRecursive(s1,0,s2,0,s3,0,&memo)
+    
+    return is_interleave(s1,0,s2,0,s3,0,memo)
 }
 
-func isInterleaveRecursive(s1 string,i int,s2 string,j int, s3 string, k int, memo *[][]int) bool {
-    if i == len(s1) {
-        return s2[j:] == s3[k:]
-    }
-    if j == len(s2) {
-        return s1[i:] == s3[k:]
-    }
-    if (*memo)[i][j] != 0 {
-        return (*memo)[i][j] == 1
-    }
-
+func is_interleave(s1 string, i1 int, s2 string, i2 int, s3 string, i3 int, memo [][]int) bool {
+    if i1 == len(s1) { return s2[i2:] == s3[i3:] }
+    if i2 == len(s2) { return s1[i1:] == s3[i3:] }
+    if memo[i1][i2] < 0 { return false }
+    if memo[i1][i2] > 0 { return true }
+    
     var ans bool
-    if (s1[i] == s3[k] && isInterleaveRecursive(s1,i+1,s2,j,s3,k+1,memo)) || (s2[j] == s3[k] && isInterleaveRecursive(s1,i,s2,j+1,s3,k+1,memo)) {
+    if s3[i3] == s2[i2] && is_interleave(s1,i1,s2,i2+1,s3,i3+1,memo) || 
+       s3[i3] == s1[i1] && is_interleave(s1,i1+1,s2,i2,s3,i3+1,memo) {
         ans = true
-    }
-    (*memo)[i][j] = -1
+       }
     if ans {
-        (*memo)[i][j] = 1
+        memo[i1][i2] = 1
+    }else {
+        memo[i1][i2] = -1
     }
+    
     return ans
 }
 ```
