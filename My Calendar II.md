@@ -35,9 +35,9 @@ Implement the  `MyCalendarTwo`  class:
 
 **Solution:**
 
-Time Complexity: O(logN) on average and O(N) on worst case of each query. same for update
-
-Space Complexity: O(K) with K is number of less than 3 overlapped blocks
+Segment Tree:
+* Time Complexity: O(logN) on average and O(N) on worst case of each query. same for update
+* Space Complexity: O(K) with K is number of less than 3 overlapped blocks
 
 ```go
 type TreeNode struct {
