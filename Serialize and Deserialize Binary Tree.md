@@ -209,3 +209,219 @@ func helper(vals []string, i []int) *TreeNode {
     return root
 }
 ```
+
+Still pre-order traversal, but not using stack
+
+```go
+import (
+  "fmt"
+  "strings"
+  "strconv"
+)
+
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+const (
+  delimiter string = ","
+  nullNode string = "null"
+)
+
+type Codec struct {
+    builder strings.Builder
+}
+
+func Constructor() Codec {
+  return Codec{}    
+}
+
+// Serializes a tree to a single string.
+func (this *Codec) serialize(root *TreeNode) string {
+  // with preorder traversal
+  this.builder.Reset()
+  
+  this.buildString(root)
+  ans := this.builder.String()
+  
+  this.builder.Reset()
+  return ans
+}
+
+func (this *Codec) buildString(root *TreeNode) {
+  if root == nil { this.builder.WriteString(nullNode); return }
+  fmt.Fprintf(&this.builder, "%d,", root.Val)
+  this.buildString(root.Left)
+  this.builder.WriteString(delimiter)
+  this.buildString(root.Right)
+}
+
+// Deserializes your encoded data to tree.
+func (this *Codec) deserialize(data string) *TreeNode {
+  if len(data) == 0 { return nil }
+  arr := strings.Split(data, delimiter)
+  
+  var idx int
+  return buildNode(arr, &idx)
+}
+
+
+func buildNode(arr []string, i *int) *TreeNode {
+  if arr[*i] == nullNode { return nil }
+  rootVal,_ := strconv.Atoi(arr[*i])
+  root := &TreeNode{Val: rootVal}
+  (*i)++
+  root.Left = buildNode(arr, i)
+  (*i)++
+  root.Right = buildNode(arr, i)
+  
+  return root
+}
+
+/**
+ * Your Codec object will be instantiated and called as such:
+ * ser := Constructor();
+ * deser := Constructor();
+ * data := ser.serialize(root);
+ * ans := deser.deserialize(data);
+ */
+```
+
+## Bonus: N-ary Tree
+
+Given a Generic Tree, Serialize and Deserialize it.
+Serialization is a basically a representation of a tree in a String format which takes much lesser space than storing the tree itself.
+Deserialization is constructing the actual tree using the the serialized format of the tree.
+
+Serialization DeSerialization Tree
+
+```
+            1
+        /   |   \
+    2       3       4
+  /   \           /   \
+5       6       7       8
+                        |
+                        9
+```
+OUTPUT:
+
+Serialized Tree :
+1 2 5 ) 6 ) ) 3 ) 4 7 ) 8 9 ) ) ) )
+
+Deserialized Tree :
+1 => [ 2 3 4 ] 2 => [ 5 6 ] 5 => [ ] 6 => [ ] 3 => [ ] 4 => [ 7 8 ] 7 => [ ] 8 => [ 9 ] 9 => [ ]
+
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"strconv"
+	"reflect"
+)
+
+const (
+  delimiter string = ","
+  nullNode string = "null"
+)
+
+type TreeNode struct {
+	Val int
+	Children []*TreeNode
+}
+
+type Codec struct {
+	builder strings.Builder
+}
+
+func Constructor() Codec {
+  return Codec{}    
+}
+
+func (this *Codec) Serialize(root *TreeNode) string {
+	this.builder.Reset()
+	this.buildString(root)
+	defer this.builder.Reset()
+	
+	return this.builder.String()
+}
+
+func (this *Codec) buildString(root *TreeNode) {
+	if root == nil { this.builder.WriteString(nullNode); return }
+	fmt.Fprintf(&this.builder, "%d,", root.Val)
+	
+	n := len(root.Children)
+	if n == 0 { this.builder.WriteRune('#'); return }
+	
+	for i := 0; i < n; i++ {
+		this.buildString(root.Children[i])
+		this.builder.WriteRune(',')
+	}
+	this.builder.WriteRune('#')
+}
+
+func (this *Codec) Deserialize(data string) *TreeNode {
+	if len(data) == 0 { return nil }
+	arr := strings.Split(data, ",")
+	var idx int
+	return this.buildNode(arr, &idx)
+}
+
+func (this *Codec) buildNode(arr []string, i *int) *TreeNode {
+	if arr[*i] == nullNode { return nil }
+	rootVal,_ := strconv.Atoi(arr[*i])
+	root := &TreeNode{Val: rootVal}
+	(*i)++
+	for (*i) < len(arr) && arr[*i] != "#" {
+		root.Children = append(root.Children, this.buildNode(arr, i))
+		(*i)++	
+	}
+	return root
+
+}
+
+func main() {
+	root := &TreeNode{Val: 1}
+	root.Children = make([]*TreeNode,3)
+
+	node1 := &TreeNode{Val: 2}
+	node1.Children = make([]*TreeNode, 2)
+	node1.Children[0] = &TreeNode{Val: 5}
+	node1.Children[1] = &TreeNode{Val: 6}
+	root.Children[0] = node1
+	
+	root.Children[1] = &TreeNode{Val: 3}
+	
+	node2 := &TreeNode{Val: 4}
+	node2.Children = make([]*TreeNode, 2)
+	node2.Children[0] = &TreeNode{Val: 7}
+	node2.Children[1] = &TreeNode{Val: 8, Children: []*TreeNode{&TreeNode{Val:9}}}
+	root.Children[2] = node2
+	
+	codec := Constructor()
+	data := codec.Serialize(root)
+	fmt.Println("before: ",data)
+	
+	decodedRoot := codec.Deserialize(data)
+	decodedData := codec.Serialize(decodedRoot)
+	fmt.Println("after: ", decodedData)
+	fmt.Printf("before == after ? %v\n",reflect.DeepEqual(data,decodedData))
+	
+}
+
+/*
+Runing main.go will give
+-------------------------
+before:  1,2,5,#,6,#,#,3,#,4,7,#,8,9,#,#,#,#
+after:   1,2,5,#,6,#,#,3,#,4,7,#,8,9,#,#,#,#
+before == after ? true
+*/
+```
+
