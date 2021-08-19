@@ -52,30 +52,23 @@ The answer is guaranteed to fit in a  **32-bit**  integer.
 **Solution:**
 
 ```go
-import "strconv"
-
 func numDecodings(s string) int {
-    n := len(s)
-    if n == 0 {
-        return 0
+  n := len(s)
+  if n == 0 { return 0 }
+  dp := make([]int, n+1)
+  dp[0] = 1
+  if s[0] != '0' { dp[1] = 1 }
+  
+  for i := 2; i <= n; i++ {
+    if s[i-1] >= '1' && s[i-1] <= '9' {
+      dp[i] += dp[i-1]
     }
-    
-    dp := make([]int, n + 1)
-    
-    dp[0] = 1
-    if s[0] != '0' { dp[1] = 1 }
-    // indexes of dp
-    for i := 2; i <= n; i++ {
-        if s[i-1] >= '1' && s[i-1] <= '9' {
-            dp[i] += dp[i-1]
-        }
-        // numbers are between 10 and 26
-        if v,_ := strconv.Atoi(s[i-2:i]); v >= 10 && v <= 26 {
-            dp[i] += dp[i-2]
-        }
+    if (s[i-2] == '1'  && (s[i-1] >= '0' && s[i-1] <= '9')) || (s[i-2] == '2' && (s[i-1] >= '0' && s[i-1] <= '6')) {
+      dp[i] += dp[i-2]
     }
-    
-    return dp[n]
+  }
+  
+  return dp[n]
 }
 ```
 
