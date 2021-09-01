@@ -27,6 +27,45 @@ Given a string  `s`, return _the longest palindromic substring_  in  `s`.
 -   `1 <= s.length <= 1000`
 -   `s`  consist of only digits and English letters (lower-case and/or upper-case),
 
+**Solution:**
+
+Expand around center: O(N^2)
+
+```go
+func longestPalindrome(s string) string {
+  // expand around the center approach
+  n := len(s)
+  if n <= 1 { return s }
+  
+  var l1,l2,l,maxlen,start int
+  for i := 0; i < n ; i++ {
+    l1 = expand(s,i,i)
+    l2 = expand(s,i,i+1)
+    l = max(l1,l2)
+    
+    if l > maxlen {
+      maxlen = l
+      start = i - (l-1)/2
+    }
+  }
+  
+  return s[start:start+maxlen]
+}
+
+func expand(s string, start,end int) int {
+  for start >= 0 && end < len(s) && s[start] == s[end] {
+    start--
+    end++
+  }
+  
+  return end-1 - (start + 1) + 1
+}
+func max(a,b int) int {
+  if a > b { return a }
+  return b
+}
+```
+
 **DP Solutions:**
 Base cases:
 - P(i,i) = true
