@@ -20,6 +20,7 @@ Given an integer  `n`, return  _all the structurally unique  **BST**'s (binary s
 **Solution:**
 
 Recursively form the left and right subtrees
+
 ```go
 /**
  * Definition for a binary tree node.
