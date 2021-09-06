@@ -45,87 +45,99 @@ Approach 1: Level order traversal
  *     Right *TreeNode
  * }
  */
-
-import "strconv"
-
-const (
-    separator = ","
-    null = "null"
+import (
+  "strings"
+  "strconv"
 )
+const Null string = "null"
 
 type Codec struct {
-    
+  
 }
 
 func Constructor() Codec {
-    return Codec{}    
+  return Codec{}
 }
 
 // Serializes a tree to a single string.
 func (this *Codec) serialize(root *TreeNode) string {
-    if root == nil { return null }
-    
-    queue := []*TreeNode{root}
+  if root == nil { return "" }
+  
+  queue := []*TreeNode{root}
+  var b strings.Builder
+  var node *TreeNode
+  
+  for len(queue) > 0 {
     n := len(queue)
-    var node *TreeNode
-    var ans []string
-    
-    for n > 0 {
-        for i := 0; i < n; i++ {
-            node = queue[i]
-            if node == nil {
-                ans = append(ans,null)
-                continue
-            }
-            ans = append(ans,strconv.Itoa(node.Val))
-            queue = append(queue, node.Left)
-            queue = append(queue, node.Right)    
-        }
-        queue = queue[n:]
-        n = len(queue)
+    var areLeaves bool
+    var temp []*TreeNode
+    for i := 0; i < n; i++ {
+      node = queue[i]
+      if node == nil {
+        b.WriteString(Null)
+        b.WriteRune(',')
+        continue
+      }else {
+        b.WriteString(strconv.Itoa(node.Val))  
+        b.WriteRune(',')
+      }
+      
+      if node.Left != nil || node.Right != nil {
+        areLeaves = false
+      }
+      temp = append(temp, node.Left, node.Right)
     }
-    return strings.Join(ans,separator)
+    if areLeaves {
+      break
+    }
+    queue = temp
+  }
+  
+  s := b.String()
+  return s[0:len(s)-1]
 }
 
 // Deserializes your encoded data to tree.
 func (this *Codec) deserialize(data string) *TreeNode {    
-    arr := strings.Split(data,separator)
-    if len(arr) == 0 || arr[0] == null { return nil }
+  if data == "" { return nil }
+  nums := strings.Split(data, ",")
+  n := len(nums)
+  if n == 0 { return nil }
+  root := &TreeNode{}
+  root.Val,_ = strconv.Atoi(nums[0])
+  queue := []*TreeNode{root}
+
+  var i int
+  for len(queue) > 0 {
+    var temp []*TreeNode
     
-    v,_ := strconv.Atoi(arr[0])
-    root := &TreeNode{Val: v}
-    queue := []*TreeNode{root}
-    k,n := 1,len(queue)
-    var node,left,right *TreeNode
-    
-    for n > 0 {
-        for i := 0; i < n; i++ {
-            node = queue[i]
-            if node != nil {
-                left,right = nil,nil
-                if arr[k] != null {
-                    v,_ = strconv.Atoi(arr[k])
-                    left = &TreeNode{Val: v}
-                }
-                k++
-                if arr[k] != null {
-                    v,_ = strconv.Atoi(arr[k])
-                    right = &TreeNode{Val: v}
-                }
-                node.Left,node.Right = left,right
-                queue = append(queue,left,right)
-                k++
-            }
-            
-        }
-        queue = queue[n:]
-        n = len(queue)
+    for j := 0; j < len(queue); j++ {
+      i++
+      if i >= n { break }
+      left := toNode(nums[i])
+      queue[j].Left = left
+      if left != nil { temp = append(temp, left) }
+      
+      i++
+      if i >= n { break }
+      right := toNode(nums[i])
+      queue[j].Right = right
+      if right != nil { temp = append(temp, right) }
+      
     }
     
-    return root
+    queue = temp
+  }
+  
+  return root
 }
 
-
+func toNode(s string) *TreeNode {
+  if s == Null { return nil }
+  node := &TreeNode{}
+  node.Val,_ = strconv.Atoi(s)
+  return node
+}
 /**
  * Your Codec object will be instantiated and called as such:
  * ser := Constructor();
