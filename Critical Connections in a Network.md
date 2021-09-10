@@ -25,7 +25,9 @@ Return all critical connections in the network in any order.
 
 
 Find bridges between Strongly Connected Components
+
 Solution: Tarjan's algorithm
+
 1. Start at any node and do DFS traversal. Label node with increasing 'id' as we go
 2. Keep track of the 'id' of each node and assign smallest id (low link) from its neighbor (if there is smaller id than the current node)
 3. During DFS, if we see that current node's id is less than lowlink of its neighbor, then the connection between the current node and this neighbor is the bridge of the current SCC and another SCC
