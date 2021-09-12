@@ -23,6 +23,63 @@ Given an integer array  `nums`  and an integer  `k`, return  _the_  `k`  _most f
 
 **Solution:**
 
+Quick select
+
+```go
+func topKFrequent(nums []int, k int) []int {
+  n := len(nums)
+  if n == 1 { return nums }
+  freqs := make(map[int]int)
+  for i := 0; i < n; i++ {
+    freqs[nums[i]]++
+  }
+  n = len(freqs)
+
+  arr := make([][2]int, n)
+  var i int
+  for k,v := range freqs {
+    arr[i] = [2]int{k,v}
+    i++
+  }
+  
+  lo,hi := 0,n-1
+  targetIdx := n-k
+  
+  for lo <= hi {
+    pivot := partition(arr, lo,hi)
+    if pivot < targetIdx {
+      lo = pivot + 1
+    }else if pivot > targetIdx {
+      hi = pivot - 1
+    }else {
+      ans := make([]int, k)
+      for i := n-1; i >= pivot; i-- {
+        ans[n-1-i] = arr[i][0]
+      }
+      return ans
+    }
+  }
+  
+  return nums
+}
+
+func partition(nums [][2]int, lo, hi int) int {
+  pivotal := nums[hi]
+  swapIdx := lo
+  
+  for i := lo; i < hi; i++ {
+    if nums[i][1] < pivotal[1] {
+      nums[i],nums[swapIdx] = nums[swapIdx],nums[i]
+      swapIdx++
+    }
+  }
+  nums[hi],nums[swapIdx] = nums[swapIdx],nums[hi]
+  return swapIdx
+}
+```
+
+Heap
+
 ```go
 import "container/heap"
 
