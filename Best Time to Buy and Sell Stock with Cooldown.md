@@ -1,5 +1,6 @@
 
-# Best Time to Buy and Sell Stock with Cooldown
+# 309. Best Time to Buy and Sell Stock with Cooldown
+
 Say you have an array for which the  _i_th  element is the price of a given stock on day  _i_.
 
 Design an algorithm to find the maximum profit. You may complete as many transactions as you like (ie, buy one and sell one share of the stock multiple times) with the following restrictions:
@@ -46,20 +47,30 @@ s2 = s1 = s0 = 0 // does not have anything to sell at 0
 Here is the code:
 
 ```go
+/*
+b0,b1
+s0,s1
+
+b0 = -prices[0]
+s0 = 0
+// option: buy,sell,do nothing
+s1 = max(s0, b0 + prices[i])
+b1 = max(b0, sp - prices[i])
+b0,sp,s0 = b1,s0,s1
+*/
 func maxProfit(prices []int) int {
     n := len(prices)
-    if n <= 1 {
-        return 0
-    }
-    var b1,b0,s2,s1,s0 int = -prices[0],-prices[0],0,0,0
-    
+    // i = 0
+    b0,s0 := -prices[0],0
+    var b1,sp,s1 int
+
     for i := 1; i < n; i++ {
-        b0 = max(b1,s2-prices[i])
-        s0 = max(s1, b1 + prices[i])
-        
-        b1,s2,s1 = b0,s1,s0
+        s1 = max(s0, b0 + prices[i])
+        b1 = max(b0, sp - prices[i])
+        b0,sp,s0 = b1,s0,s1    
     }
-    return s0
+    
+    return max(b1,s1)
 }
 
 func max(a,b int) int {
