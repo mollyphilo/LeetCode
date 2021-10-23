@@ -1,5 +1,5 @@
 
-# Find Minimum in Rotated Sorted Array
+# 153. Find Minimum in Rotated Sorted Array
 
 Suppose an array of length  `n`  sorted in ascending order is  **rotated**  between  `1`  and  `n`  times. For example, the array  `nums = [0,1,2,4,5,6,7]`  might become:
 
@@ -70,5 +70,30 @@ func findMin(nums []int) int {
         }
     }
     return -1
+}
+```
+
+Another solution:
+
+```go
+func findMin(nums []int) int {
+    n := len(nums)
+    lo,hi := 0,n-1
+    
+    if n == 1 { return nums[0] }
+    if nums[lo] < nums[hi] { return nums[0] } // not reverted
+    
+    for lo <= hi {
+        mid := (lo+hi)/2
+        if nums[mid] < nums[hi] {
+            hi = mid // min on left side
+        }else if nums[mid] > nums[hi] {
+            lo = mid + 1 // min on right side
+        }else {
+            return nums[mid]
+        }
+    }
+    
+    return nums[0]
 }
 ```
