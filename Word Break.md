@@ -61,3 +61,70 @@ func wordBreak(s string, wordDict []string) bool {
     return dp[n]
 }
 ```
+
+Trie with Memorization
+
+```go
+type Node struct {
+    children []*Node
+    isWord bool
+}
+
+func wordBreak(s string, wordDict []string) bool {
+    root := buildtree(wordDict)
+    
+    cache := make(map[string]bool)
+    return search(s, root, cache)
+}
+
+func search(s string, root *Node, cache map[string]bool) bool {
+    if val,ok := cache[s]; ok {
+        return val
+    }
+    
+    node := root
+    
+    for start := 0; start < len(s); start++ {
+        i := s[start]-'a'
+        node = node.children[i]
+
+        if node == nil {
+            cache[s] = false
+            return false
+        }
+        // is this is the end of the word, we can search for next word as well as continue to next letter 
+        if node.isWord {
+            if start == len(s)-1 {
+                cache[s] = true
+                return true
+            }
+            nextstr := s[start+1:]
+            val := search(nextstr, root, cache)
+            cache[nextstr] = val
+            if val {
+                return val
+            }
+        }
+    }
+    
+    cache[s] = false
+    return cache[s]
+}
+
+func buildtree(words []string) *Node {
+    root := &Node{children: make([]*Node, 26), isWord: false}
+    
+    for _,w := range words {
+        node := root
+        for i := 0; i < len(w); i++ {
+            if node.children[w[i]-'a'] == nil {
+                node.children[w[i]-'a'] = &Node{children: make([]*Node, 26)}
+            }
+            node = node.children[w[i]-'a']
+        }
+        node.isWord = true
+    }
+    
+    return root
+}
+```
