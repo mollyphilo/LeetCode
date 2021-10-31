@@ -60,3 +60,29 @@ func flattenNode(root *TreeNode) *TreeNode {
     return root
 }
 ```
+
+Slightly different
+
+```go
+func flatten(root *TreeNode)  {
+    if root == nil { return }
+    
+    traverse(root)
+}
+
+func traverse(root *TreeNode) *TreeNode {
+    if root == nil || (root.Left == nil && root.Right == nil) { return root }
+    
+    rightStart := root.Right
+    if root.Left != nil {
+        leftEnd := traverse(root.Left)
+        root.Right = root.Left
+        root.Left = nil
+        if rightStart == nil {
+            return leftEnd
+        }
+        leftEnd.Right = rightStart
+    }
+    return traverse(rightStart)
+}
+```
